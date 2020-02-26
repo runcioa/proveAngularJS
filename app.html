@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="sportsStore">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parking</title>
+  <script src="./node_modules/angular/angular.min.js"></script>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+  <script>
+    angular.module("sportsStore", ["customFilters"]);
+  </script>
+  <script src="./controllers/sportsStore.js" ></script>
+  <script src="./filters/customFilters.js" ></script>
+  <script src="./controllers/productListControllers.js" ></script>
+
+  
+</head>
+<body ng-controller = "sportsStoreCtrl">
+  
+  <div class="navbar navbar-dark bg-dark">
+    <a href="#" class="navbar-brand">SPORT STORE</a>
+  </div>
+
+  <div class="alert alert-danger" ng-show="data.error" >
+    Error ({{data.error.status}}). The product data was not loaded
+    <a href="/app.html" class="alert-link">Click here to try again</a>
+  </div>
+
+  
+  <div class="card" ng-controller="productListCtrl" ng-hide="data.error" >
+    <div class="card-body">
+      <div class="row" >
+        <div class="col-md-3">
+          <a ng-click="selectedCategory()" class="btn btn-block btn-success btn-lg">Home</a>
+          <a 
+            ng-repeat="item in data.products | orderBy: 'category' |unique: 'category'" 
+            class="btn btn-block btn-success btn-lg" 
+            ng-click="selectedCategory(item)"
+            ng-class = "getCategoryClass(item)"
+            >{{item}}</a>
+        </div>
+        
+        <div class="col-md-8">
+          <div class="card bg-info mb-3 " ng-repeat="item in data.products  | filter: categoryFilterFn | range: selectedPage: pageSize">
+            <h3>
+              <strong>{{item.name}}</strong>
+              <span class="btn btn-primary">
+                {{item.price | currency}}
+              </span>
+            </h3>
+            <span class="">{{item.description}}</span>
+          </div>
+        </div>
+     </div>
+     <div class="btn-group float-right">
+       <a ng-repeat="page in data.products | filter: categoryFilterFn | pageCount: pageSize"
+          ng-click="selectPage($index+1)" 
+          class="btn btn-success"
+          ng-class="getPageClass($index + 1)"
+          >
+        {{$index +1}}
+       </a>
+     </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
