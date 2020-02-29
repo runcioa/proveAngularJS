@@ -1,9 +1,9 @@
 angular.module("sportsStore")
 .constant("dataUrl", "http://80.211.189.37:5500/products")
-.controller("sportsStoreCtrl", function ($scope, $http, dataUrl){
+.constant("orderUrl", "http://80.211.189.37:5500/orders")
+.controller("sportsStoreCtrl", function ($scope, $http, $location, dataUrl, orderUrl, cart){
   
   $scope.data = {};
-
 
   $http.get(dataUrl)
     .then(function (resolve){
@@ -25,19 +25,31 @@ angular.module("sportsStore")
               console.log(reject.xhrStatus);
             }
     );
-
-
-
-    // products: [
-    //   {name:"Product #1", description: "A product", category: "Category #1", price: 100},
-    //   {name:"Product #2", description: "A product", category: "Category #1", price: 110},
-    //   {name:"Product #3", description: "A product", category: "Category #2", price: 210},
-    //   {name:"Product #4", description: "A product", category: "Category #3", price: 202},
-    //   {name:"Product #4", description: "A product", category: "Category #3", price: 202},
-    //   {name:"Product #4", description: "A product", category: "Category #3", price: 202},
-    //   {name:"Product #4", description: "A product", category: "Category #3", price: 202}
-
-    // ]
-  ;
+  
+    $scope.sendOrder = function (shippingDetails){
+      var order = angular.copy (shippingDetails);
+      
+      order.products = cart.getProducts();
+          
+      $http.post(orderUrl, order)
+        .then(function (data) {
+           $scope.data.orderId = data.id;
+           cart.getProducts().length = 0;
+        }, 
+        function(reject) {
+          $scope.data.orderError = reject.data || 'Request failed';
+          console.log(reject.status);
+          
+          console.log(reject.data.status);
+          console.log(reject.headers);
+          console.log(reject.config);
+          console.log(reject.statusText);
+          console.log(reject.xhrStatus);
+        }).finally(function() {
+        $location.path("/complete");
+        console.log('arrivato')
+      })
+    };
+  
 });
-
+  

@@ -1,0 +1,39 @@
+<div class="card" ng-controller="productListCtrl" ng-hide="data.error" >
+  <div class="card-body">
+    <div class="row" >
+      <div class="col-md-3">
+        <a ng-click="selectedCategory()" class="btn btn-block btn-success btn-lg">Home</a>
+        <a 
+          ng-repeat="item in data.products | orderBy: 'category' |unique: 'category'" 
+          class="btn btn-block btn-success btn-lg" 
+          ng-click="selectedCategory(item)"
+          ng-class = "getCategoryClass(item)"
+          >{{item}}</a>
+      </div>
+      
+      <div class="col-md-8">
+        <div class="card bg-info mb-3 " ng-repeat="item in data.products  | filter: categoryFilterFn | range: selectedPage: pageSize">
+          <h3>
+            <strong>{{item.name}}</strong>
+            <span class="btn btn-primary">
+              {{item.price | currency}}
+            </span>
+          </h3>
+          <button ng-click="addProductToCart(item)" class="btn btn-success ml-auto">
+            Add to cart
+          </button>
+          <span class="">{{item.description}}</span>
+        </div>
+      </div>
+   </div>
+   <div class="btn-group float-right">
+     <a ng-repeat="page in data.products | filter: categoryFilterFn | pageCount: pageSize"
+        ng-click="selectPage($index+1)" 
+        class="btn btn-success"
+        ng-class="getPageClass($index + 1)"
+        >
+      {{$index +1}}
+     </a>
+   </div>
+  </div>
+</div>

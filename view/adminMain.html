@@ -1,0 +1,21 @@
+
+
+
+<div ng-controller="mainCtrl" class="card card-body bg-light">
+  <div class="row">
+    <div class="col-3">
+      
+      <a 
+        ng-repeat="item in screens" 
+        class="btn btn-block btn-outline-secondary" 
+        ng-class="{ 'btn-primary': item == current }" 
+        ng-click="setScreen($index)" >
+        {{item}}
+      </a>
+    </div>
+    <div class="col-9">
+      
+      <div ng-include="getScreen()"></div>
+    </div>  
+  </div>
+</div>
