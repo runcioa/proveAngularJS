@@ -1,5 +1,6 @@
 angular.module("sportsStoreAdmin")
   .constant("authUrl", "http://80.211.189.37:5500/users/login")
+  .constant("ordersUrl", "http://80.211.189.37:5500/orders")
   .controller("authCtrl", function($scope, $http, $location, authUrl){
 
     $scope.authenticate = function(user, pass){
@@ -39,10 +40,12 @@ angular.module("sportsStoreAdmin")
         $scope.error = response.data;
       });
 
-    $scope.selectOrder;
+    $scope.selectedOrder;
 
     $scope.selectOrder = function(order){
-      $scope.selectOrder = order;
+      $scope.selectedOrder = order;
+      
+
     };
 
     $scope.calcTotal = function(order){

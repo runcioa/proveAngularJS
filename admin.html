@@ -13,10 +13,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <script src="./node_modules/angular-route/angular-route.js" ></script>
+  <script src="./node_modules/angular-resource/angular-resource.js" ></script>
   
 
   <script>
-    angular.module("sportsStoreAdmin", ["ngRoute"])
+    angular.module("sportsStoreAdmin", ["ngRoute", "ngResource"])
     .config(function ($routeProvider){
 
       $routeProvider.when("/login", {
@@ -35,6 +36,7 @@
     });
   </script>
   <script src="./controllers/adminControllers.js" ></script>
+  <script src="./controllers/adminProductController.js" ></script>
 
   
 </head>
